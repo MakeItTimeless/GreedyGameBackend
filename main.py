@@ -13,6 +13,10 @@ db = get_database()
 def run_async(coro):
     return event_loop.run_until_complete(coro)
 
+@app.route('/hello', methods=['GET'])
+def hello():
+    return jsonify({'status': 'ok', 'message': 'hello world'}), 200
+
 @app.route('/login', methods=['POST'])
 def login():
     print("hi")

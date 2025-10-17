@@ -1,42 +1,4 @@
 {
-  "builds": [
-    {
-      "src": "api/main.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "functions": {
-    "api/*.py": {
-      "runtime": "python3.12"
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/main.py"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://greedy-game-uk56.vercel.app"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
-        },
-        {
-          "key": "Access-Control-Allow-Credentials",
-          "value": "true"
-        }
-      ]
-    }
-  ]
+  "builds": [{ "src": "main.py", "use": "@vercel/python" }],
+  "routes": [{ "src": "/(.*)", "dest": "main.py" }]
 }
