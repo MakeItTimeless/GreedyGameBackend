@@ -6,6 +6,14 @@ import asyncio
 app = Flask(__name__)
 CORS(app)
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Origin"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
 event_loop = asyncio.new_event_loop()
 asyncio.set_event_loop(event_loop)
 db = get_database()
