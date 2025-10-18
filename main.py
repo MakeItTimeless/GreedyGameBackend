@@ -25,10 +25,12 @@ def run_async(coro):
 def hello():
     return jsonify({'status': 'ok', 'message': 'hello world'}), 200
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
-    email = request.args.get('email')
-    password = request.args.get('password')
+    print("hi")
+    data = request.get_json() or {}
+    email = data.get('email')
+    password = data.get('password')
 
     if not email or not password:
         return jsonify({'status': 'error', 'message': 'email and password required'}), 400
@@ -44,11 +46,12 @@ def login():
         'user': user
     }), 200
 
-@app.route('/register', methods=['GET'])
+@app.route('/register', methods=['POST'])
 def register():
-    email = request.args.get('email')
-    password = request.args.get('password')
-    fullname = request.args.get('fullname')
+    data = request.get_json() or {}
+    email = data.get('email')
+    password = data.get('password')
+    fullname = data.get('fullname')
 
     if not email or not password or not fullname:
         return jsonify({'status': 'error', 'message': 'email, password and fullname required'}), 400
