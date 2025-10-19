@@ -52,11 +52,15 @@ def register():
     email = data.get('email')
     password = data.get('password')
     fullname = data.get('fullname')
+    user_type = "user"
 
     if not email or not password or not fullname:
         return jsonify({'status': 'error', 'message': 'email, password and fullname required'}), 400
 
-    user = run_async(db.add_user(fullname, email, password))
+    if user_type not in ('user', 'super_user'):
+        return jsonify({'status': 'error', 'message': "user_type must be 'user' or 'super_user'"}), 400
+
+    user = run_async(db.add_user(fullname, email, password, user_type))
     if not user:
         return jsonify({'status': 'error', 'message': 'user with that email already exists'}), 409
 
@@ -65,6 +69,28 @@ def register():
         'message': 'register successful',
         'user': user
     }), 201
+
+@app.route('/change_user_type', methods=['POST'])
+def change_user_type():
+    data = request.get_json() or {}
+    email = data.get('email')
+    new_type = data.get('new_type')
+
+    if not email or not new_type:
+        return jsonify({'status': 'error', 'message': 'email and new_type required'}), 400
+
+    if new_type not in ('user', 'super_user'):
+        return jsonify({'status': 'error', 'message': "new_type must be 'user' or 'super_user'"}), 400
+
+    user = run_async(db.change_user_type(email, new_type))
+    if not user:
+        return jsonify({'status': 'error', 'message': 'user not found'}), 404
+
+    return jsonify({
+        'status': 'ok',
+        'message': 'user type changed successfully',
+        'user': user
+    }), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
