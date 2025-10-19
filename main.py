@@ -44,7 +44,7 @@ def login():
             'user': {
                 'fullname': 'Admin User',
                 'email': ADMIN_EMAIL,
-                'user_type': 'super_user'
+                'user_type': 'admin'
             }
         }), 200
 
