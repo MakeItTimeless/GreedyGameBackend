@@ -27,7 +27,6 @@ def hello():
 
 @app.route('/login', methods=['POST'])
 def login():
-    print("hi")
     data = request.get_json() or {}
     email = data.get('email')
     password = data.get('password')
@@ -105,6 +104,16 @@ def change_user_type():
         'message': 'user type changed successfully',
         'user': user
     }), 200
+
+@app.route('/users', methods=['GET'])
+def get_all_users():
+    users = run_async(db.list_users())
+    return jsonify({
+        'status': 'ok',
+        'users': users
+    }), 200
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

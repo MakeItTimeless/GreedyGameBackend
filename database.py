@@ -51,6 +51,14 @@ class Database:
         user.pop("password_hash", None)
         user["id"] = str(user.pop("_id"))
         return user
+
+    async def list_users(self) -> list:
+        cursor = self.db.users.find({}, {"password_hash": 0})
+        users = []
+        async for user in cursor:
+            user["id"] = str(user.pop("_id"))
+            users.append(user)
+        return users
     
 
 _db_instance: Optional[Database] = None
